@@ -226,7 +226,7 @@ void ath9k_htc_reset(struct ath9k_htc_priv *priv)
 	WMI_CMD_BUF(WMI_SET_MODE_CMDID, &htc_mode);
 
 	WMI_CMD(WMI_ENABLE_INTR_CMDID);
-	htc_start_hst(priv->htc);
+	htc_start(priv->htc);
 	ath9k_htc_vif_reconfig(priv);
 	ieee80211_wake_queues(priv->hw);
 
@@ -305,7 +305,7 @@ static int ath9k_htc_set_channel(struct ath9k_htc_priv *priv,
 	if (ret)
 		goto err;
 
-	htc_start_hst(priv->htc);
+	htc_start(priv->htc);
 
 	if (!test_bit(ATH_OP_SCANNING, &common->op_flags) &&
 	    !(hw->conf.flags & IEEE80211_CONF_OFFCHANNEL))
@@ -958,7 +958,7 @@ static int ath9k_htc_start(struct ieee80211_hw *hw)
 			"Failed to update capability in target\n");
 
 	clear_bit(ATH_OP_INVALID, &common->op_flags);
-	htc_start_hst(priv->htc);
+	htc_start(priv->htc);
 
 	spin_lock_bh(&priv->tx.tx_lock);
 	priv->tx.flags &= ~ATH9K_HTC_OP_TX_QUEUES_STOP;
@@ -1770,8 +1770,8 @@ static int ath9k_htc_set_bitrate_mask(struct ieee80211_hw *hw,
 	memset(&tmask, 0, sizeof(struct ath9k_htc_target_rate_mask));
 
 	tmask.vif_index = avp->index;
-	tmask.band = NL80211_BAND_2GHZ;
-	tmask.mask = cpu_to_be32(mask->control[NL80211_BAND_2GHZ].legacy);
+	tmask.band = IEEE80211_BAND_2GHZ;
+	tmask.mask = cpu_to_be32(mask->control[IEEE80211_BAND_2GHZ].legacy);
 
 	WMI_CMD_BUF(WMI_BITRATE_MASK_CMDID, &tmask);
 	if (ret) {
@@ -1781,8 +1781,8 @@ static int ath9k_htc_set_bitrate_mask(struct ieee80211_hw *hw,
 		goto out;
 	}
 
-	tmask.band = NL80211_BAND_5GHZ;
-	tmask.mask = cpu_to_be32(mask->control[NL80211_BAND_5GHZ].legacy);
+	tmask.band = IEEE80211_BAND_5GHZ;
+	tmask.mask = cpu_to_be32(mask->control[IEEE80211_BAND_5GHZ].legacy);
 
 	WMI_CMD_BUF(WMI_BITRATE_MASK_CMDID, &tmask);
 	if (ret) {
@@ -1793,8 +1793,8 @@ static int ath9k_htc_set_bitrate_mask(struct ieee80211_hw *hw,
 	}
 
 	ath_dbg(common, CONFIG, "Set bitrate masks: 0x%x, 0x%x\n",
-		mask->control[NL80211_BAND_2GHZ].legacy,
-		mask->control[NL80211_BAND_5GHZ].legacy);
+		mask->control[IEEE80211_BAND_2GHZ].legacy,
+		mask->control[IEEE80211_BAND_5GHZ].legacy);
 out:
 	return ret;
 }

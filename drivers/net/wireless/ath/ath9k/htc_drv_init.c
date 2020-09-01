@@ -134,7 +134,7 @@ static inline int ath9k_htc_connect_svc(struct ath9k_htc_priv *priv,
 	req.ep_callbacks.rx = ath9k_htc_rxep;
 	req.ep_callbacks.tx = tx;
 
-	return htc_connect_service_hst(priv->htc, &req, ep_id);
+	return htc_connect_service(priv->htc, &req, ep_id);
 }
 
 static int ath9k_init_htc_services(struct ath9k_htc_priv *priv, u16 devid,
@@ -765,11 +765,11 @@ static void ath9k_set_hw_capab(struct ath9k_htc_priv *priv,
 		sizeof(struct htc_frame_hdr) + 4;
 
 	if (priv->ah->caps.hw_caps & ATH9K_HW_CAP_2GHZ)
-		hw->wiphy->bands[NL80211_BAND_2GHZ] =
-			&common->sbands[NL80211_BAND_2GHZ];
+		hw->wiphy->bands[IEEE80211_BAND_2GHZ] =
+			&common->sbands[IEEE80211_BAND_2GHZ];
 	if (priv->ah->caps.hw_caps & ATH9K_HW_CAP_5GHZ)
-		hw->wiphy->bands[NL80211_BAND_5GHZ] =
-			&common->sbands[NL80211_BAND_5GHZ];
+		hw->wiphy->bands[IEEE80211_BAND_5GHZ] =
+			&common->sbands[IEEE80211_BAND_5GHZ];
 
 	ath9k_cmn_reload_chainmask(ah);
 

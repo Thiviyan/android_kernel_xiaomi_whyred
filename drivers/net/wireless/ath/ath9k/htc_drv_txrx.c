@@ -494,7 +494,7 @@ static void ath9k_htc_tx_process(struct ath9k_htc_priv *priv,
 		if (txs->ts_flags & ATH9K_HTC_TXSTAT_SGI)
 			rate->flags |= IEEE80211_TX_RC_SHORT_GI;
 	} else {
-		if (cur_conf->chandef.chan->band == NL80211_BAND_5GHZ)
+		if (cur_conf->chandef.chan->band == IEEE80211_BAND_5GHZ)
 			rate->idx += 4; /* No CCK rates */
 	}
 
@@ -543,7 +543,7 @@ void ath9k_htc_tx_drain(struct ath9k_htc_priv *priv)
 	 * Ensure that all pending TX frames are flushed,
 	 * and that the TX completion/failed tasklets is killed.
 	 */
-	htc_stop_hst(priv->htc);
+	htc_stop(priv->htc);
 	tasklet_kill(&priv->wmi->wmi_event_tasklet);
 	tasklet_kill(&priv->tx_failed_tasklet);
 
