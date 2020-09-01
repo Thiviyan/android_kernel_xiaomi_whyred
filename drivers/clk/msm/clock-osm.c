@@ -438,19 +438,14 @@ static inline int clk_osm_read_reg(struct clk_osm *c, u32 offset)
 	return readl_relaxed((char *)c->vbases[OSM_BASE] + offset);
 }
 
-static inline int clk_osm_read_reg_no_log(struct clk_osm *c, u32 offset)
-{
-	return readl_relaxed_no_log((char *)c->vbases[OSM_BASE] + offset);
-}
-
 static inline int clk_osm_mb(struct clk_osm *c, int base)
 {
-	return readl_relaxed_no_log((char *)c->vbases[base] + VERSION_REG);
+	return readl_relaxed((char *)c->vbases[base] + VERSION_REG);
 }
 
 static inline int clk_osm_acd_mb(struct clk_osm *c)
 {
-	return readl_relaxed_no_log((char *)c->vbases[ACD_BASE] +
+	return readl_relaxed((char *)c->vbases[ACD_BASE] +
 				    ACD_HW_VERSION);
 }
 
@@ -3057,7 +3052,9 @@ static void populate_debugfs_dir(struct clk_osm *c)
 	if (osm_debugfs_base == NULL) {
 		osm_debugfs_base = debugfs_create_dir("osm", NULL);
 		if (IS_ERR_OR_NULL(osm_debugfs_base)) {
+#ifdef CONFIG_DEBUG_FS
 			pr_err("osm debugfs base directory creation failed\n");
+#endif
 			osm_debugfs_base = NULL;
 			return;
 		}
