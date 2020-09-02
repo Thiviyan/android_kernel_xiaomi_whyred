@@ -15,7 +15,6 @@
 #ifndef __XMIT_OSDEP_H_
 #define __XMIT_OSDEP_H_
 
-
 struct pkt_file {
 	_pkt *pkt;
 	SIZE_T pkt_len;	 /* the remainder length of the open_file */
@@ -25,6 +24,7 @@ struct pkt_file {
 	SIZE_T buf_len;
 };
 
+/*
 #ifdef PLATFORM_WINDOWS
 
 #ifdef PLATFORM_OS_XP
@@ -44,12 +44,12 @@ struct pkt_file {
 #define ETH_ALEN	6
 
 extern NDIS_STATUS rtw_xmit_entry(
-	IN _nic_hdl		cnxt,
-	IN NDIS_PACKET		*pkt,
-	IN UINT				flags
+	_nic_hdl		cnxt,
+	NDIS_PACKET		*pkt,
+	u32				flags
 );
 
-#endif /* PLATFORM_WINDOWS */
+//#endif PLATFORM_WINDOWS */
 
 #ifdef PLATFORM_FREEBSD
 #define NR_XMITFRAME	256

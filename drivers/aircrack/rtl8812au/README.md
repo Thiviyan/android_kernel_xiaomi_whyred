@@ -3,11 +3,11 @@ Only for use with Linux & Android
 
 [![Monitor mode](https://img.shields.io/badge/monitor%20mode-working-brightgreen.svg)](#)
 [![Frame Injection](https://img.shields.io/badge/frame%20injection-working-brightgreen.svg)](#)
-[![GitHub version](https://raster.shields.io/badge/version-v5.6.4.2-lightgrey.svg)](#)
+[![GitHub version](https://raster.shields.io/badge/version-v5.7.0-lightgrey.svg)](#)
 [![GitHub issues](https://img.shields.io/github/issues/aircrack-ng/rtl8812au.svg)](https://github.com/aircrack-ng/rtl8812au/issues)
 [![GitHub forks](https://img.shields.io/github/forks/aircrack-ng/rtl8812au.svg)](https://github.com/aircrack-ng/rtl8812au/network)
 [![GitHub stars](https://img.shields.io/github/stars/aircrack-ng/rtl8812au.svg)](https://github.com/aircrack-ng/rtl8812au/stargazers)
-[![Build Status](https://travis-ci.org/aircrack-ng/rtl8812au.svg?branch=v5.6.4.2)](https://travis-ci.org/aircrack-ng/rtl8812au)
+[![Build Status](https://travis-ci.org/aircrack-ng/rtl8812au.svg?branch=v5.7.0)](https://travis-ci.org/aircrack-ng/rtl8812au)
 [![GitHub license](https://img.shields.io/github/license/aircrack-ng/rtl8812au.svg)](https://github.com/aircrack-ng/rtl8812au/blob/master/LICENSE)
 <br>
 [![Kali](https://img.shields.io/badge/Kali-supported-blue.svg)](https://www.kali.org)
@@ -18,13 +18,18 @@ Only for use with Linux & Android
 [![wifite2](https://img.shields.io/badge/wifite2-supported-blue.svg)](https://github.com/derv82/wifite2)
 
 
-### Important!
+### What's new?
 ```
-* Use "ip" and "iw" instead of "ifconfig" and "iwconfig"
-     It's described further down, READ THE README!
+* 8814au and 8821au has got a update, about time
+  it's a closer fit to the 8812au and it's code now.
 
-* v5.3.4 is the stable branch, not this, but this does have
-  better range then branches below + more fixes from Realtek
+* AP mode had 30 sec. disconnect issue, that's fixed.
+* Fix some AUTOSUSPEND and EARLY_SUSPEND issues
+* Some cleanup of unused code.
+
+* Some other minors all over ..
+* The 8814au and 8821au is handling/performing netter now
+ 
 ```
 
 ### IPERF3 benchmark
@@ -90,7 +95,7 @@ $ make && make install
 ### Notes
 Download
 ```
-$ git clone -b v5.6.4.2 https://github.com/aircrack-ng/rtl8812au.git
+$ git clone -b v5.7.0 https://github.com/aircrack-ng/rtl8812au.git
 cd rtl*
 ```
 Package / Build dependencies (Kali)
@@ -145,6 +150,22 @@ For setting TX power
 ```
 $ sudo iw wlan0 set txpower fixed 3000
 ```
+#### For OpenWrt
+Build as OpenWrt package
+  1. Prepare toolchain, download OpenWrt SDK or full build system. *Additional steps might be needed to make the toolchain ready to use.
+  2. Edit `feeds.conf` if exists or `feeds.conf.default`, append `src-link localfeed $(FULLPATH_TO_THIS_REPO)/openwrt`.
+  3. Update feeds `./scripts/feeds update localfeed` or `./scripts/feeds update -a`.
+  4. Install package `./scripts/feeds install kmod-rtl8812au-ac`.
+  5. Update config `make menuconfig`, navigate to `Kernel Modules -> Wireless Drivers ->`, toggle `kmod-rtl8812au-ac` to `M` or `*`.
+  6. Make.
+
+Please be aware that this will build againt HEAD commit of current branch, not current working directory.
+
+Build as out-of-tree kernel module
+  1. Prepare toolchain.
+  2. Edit `Makefile` to fit your platform. Append `NOSTDINC_FLAGS` from `openwrt/rtl8812au-ac/Makefile` to `EXTRA_CFLAGS`.
+  3. Config environment variable. Add toolchain to `PATH`, set `STAGING_DIR`, etc.
+  4. Make.
 
 ### LED control
 
