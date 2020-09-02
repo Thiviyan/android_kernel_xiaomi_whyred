@@ -196,3 +196,5 @@ fi
 build_clang
 # Post build logs
 tg_push_log
+
+cp AnyKernel3/Team420-NH-*.zip ../new/
